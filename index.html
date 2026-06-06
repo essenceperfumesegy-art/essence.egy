@@ -1,43 +1,39 @@
-const inventory = [
-    { id: 1, name: "Midnight Rose", price: 120.00, img: "product1 (26).png" },
-    { id: 2, name: "Oceanic Mist", price: 95.00, img: "product1 (33).png" },
-    { id: 3, name: "Amber Wood", price: 145.00, img: "product1 (13).png" }
-];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essence | Luxury Perfumes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">ESSENCE</div>
+        <div class="nav-icons">
+            <span class="cart-icon" onclick="toggleCart()">🛒 Cart (0)</span>
+        </div>
+    </nav>
 
-let cart = [];
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Discover Your True Essence</h1>
+            <button class="cta-button" onclick="document.getElementById('products').scrollIntoView()">Shop Now</button>
+        </div>
+    </header>
 
-function renderProducts() {
-    const list = document.getElementById('product-list');
-    list.innerHTML = "";
-    inventory.forEach(p => {
-        list.innerHTML += `
-            <div class="product-card">
-                <img src="${p.img}" alt="${p.name}">
-                <h3>${p.name}</h3>
-                <p>$${p.price.toFixed(2)}</p>
-                <button class="cta-button" onclick="addToCart(${p.id})">Add to Cart</button>
-            </div>
-        `;
-    });
-}
+    <main id="products">
+        <h2 style="text-align:center; padding-top:40px;">Signature Scents</h2>
+        <div class="product-grid" id="product-list"></div>
+    </main>
 
-function addToCart(id) {
-    const item = inventory.find(p => p.id === id);
-    cart.push(item);
-    document.querySelector('.cart-icon').innerText = `🛒 Cart (${cart.length})`;
-    alert(`${item.name} added to your bag!`);
-}
+    <section class="reviews-section">
+        <h2>Verified Essence Lovers</h2>
+        <div class="review-card">
+            <p>"Midnight Rose is my absolute signature! 🌹 #EssenceAddict"</p>
+            <span>— @sarah_perfumes</span>
+        </div>
+    </section>
 
-function toggleCart() {
-    if (cart.length === 0) return alert("Your cart is currently empty.");
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-    const confirmOrder = confirm(`Your subtotal is $${total.toFixed(2)}. Proceed to checkout?`);
-    
-    if (confirmOrder) {
-        alert("Success! Your order has been placed. Thank you for choosing Essence.");
-        cart = [];
-        document.querySelector('.cart-icon').innerText = `🛒 Cart (0)`;
-    }
-}
-
-renderProducts();
+    <script src="app.js"></script>
+</body>
+</html>
