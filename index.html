@@ -1,97 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Essence | Luxury Perfumes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <!-- Global Navigation -->
-    <nav class="navbar">
-        <div class="logo">ESSENCE</div>
-        <ul class="nav-links">
-            <li><a href="#">Men</a></li>
-            <li><a href="#">Women</a></li>
-            <li><a href="#">Accessories</a></li>
-        </ul>
-        <div class="nav-icons">
-            <span class="search-icon">🔍 Search</span>
-            <span class="cart-icon">🛒 Cart (0)</span>
-        </div>
-    </nav>
+const inventory = [
+    { id: 1, name: "Midnight Rose", price: 120.00, img: "product1 (26).png" },
+    { id: 2, name: "Oceanic Mist", price: 95.00, img: "product1 (33).png" },
+    { id: 3, name: "Amber Wood", price: 145.00, img: "product1 (13).png" }
+];
 
-    <!-- Immersive Hero Section -->
-    <header class="hero parallax">
-        <div class="hero-overlay"></div>
-        <div class="hero-content fade-on-scroll">
-            <h1>Discover Your True Essence</h1>
-            <p>A curated collection of the world's most captivating fragrances.</p>
-            <button class="cta-button">Shop The Collection</button>
-        </div>
-    </header>
+let cart = [];
 
-    <!-- Shopping Experience: Product Grid -->
-    <main class="container">
-        <section class="products">
-            <h2 class="section-title fade-on-scroll">Signature Scents</h2>
-            <div class="product-grid">
-                <!-- Product 1 -->
-                <div class="product-card fade-on-scroll">
-                    <div class="img-container">
-                        <!-- Updated to use your local image -->
-                        <img src="product1 (26).png" alt="Midnight Rose">
-                    </div>
-                    <h3>Midnight Rose</h3>
-                    <p class="price">$120.00</p>
-                    <button class="add-to-cart">Add to Cart</button>
-                </div>
-                <!-- Product 2 -->
-                <div class="product-card fade-on-scroll" style="transition-delay: 0.1s;">
-                    <div class="img-container">
-                        <!-- Updated to use your local image -->
-                        <img src="product1 (33).png" alt="Oceanic Mist">
-                    </div>
-                    <h3>Oceanic Mist</h3>
-                    <p class="price">$95.00</p>
-                    <button class="add-to-cart">Add to Cart</button>
-                </div>
-                <!-- Product 3 -->
-                <div class="product-card fade-on-scroll" style="transition-delay: 0.2s;">
-                    <div class="img-container">
-                        <!-- Updated to use your local image -->
-                        <img src="product1 (13).png" alt="Amber Wood">
-                    </div>
-                    <h3>Amber Wood</h3>
-                    <p class="price">$145.00</p>
-                    <button class="add-to-cart">Add to Cart</button>
-                </div>
+function renderProducts() {
+    const list = document.getElementById('product-list');
+    list.innerHTML = "";
+    inventory.forEach(p => {
+        list.innerHTML += `
+            <div class="product-card">
+                <img src="${p.img}" alt="${p.name}">
+                <h3>${p.name}</h3>
+                <p>$${p.price.toFixed(2)}</p>
+                <button class="cta-button" onclick="addToCart(${p.id})">Add to Cart</button>
             </div>
-        </section>
-    </main>
+        `;
+    });
+}
 
-    <!-- Global Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Essence</h4>
-                <p>Elevating everyday moments through the art of fine fragrance.</p>
-            </div>
-            <div class="footer-section">
-                <h4>Support</h4>
-                <a href="#">Contact Us</a>
-                <a href="#">Shipping & Returns</a>
-                <a href="#">FAQ</a>
-            </div>
-            <div class="footer-section">
-                <h4>Legal</h4>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-            </div>
-        </div>
-    </footer>
+function addToCart(id) {
+    const item = inventory.find(p => p.id === id);
+    cart.push(item);
+    document.querySelector('.cart-icon').innerText = `🛒 Cart (${cart.length})`;
+    alert(`${item.name} added to your bag!`);
+}
 
-    <script src="app.js"></script>
-</body>
-</html>
+function toggleCart() {
+    if (cart.length === 0) return alert("Your cart is currently empty.");
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    const confirmOrder = confirm(`Your subtotal is $${total.toFixed(2)}. Proceed to checkout?`);
+    
+    if (confirmOrder) {
+        alert("Success! Your order has been placed. Thank you for choosing Essence.");
+        cart = [];
+        document.querySelector('.cart-icon').innerText = `🛒 Cart (0)`;
+    }
+}
+
+renderProducts();
