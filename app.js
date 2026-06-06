@@ -1,33 +1,43 @@
+const inventory = [
+    { id: 1, name: "Midnight Rose", price: 120.00, img: "product1 (26).png" },
+    { id: 2, name: "Oceanic Mist", price: 95.00, img: "product1 (33).png" },
+    { id: 3, name: "Amber Wood", price: 145.00, img: "product1 (13).png" }
+];
 
-// Immersive Scroll Reveal Animations
-document.addEventListener('DOMContentLoaded', () => {
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.15 // Triggers when 15% of the element is visible
-    };
+let cart = [];
 
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target); // Only animate once
-            }
-        });
-    }, observerOptions);
-
-    const fadeElements = document.querySelectorAll('.fade-on-scroll');
-    fadeElements.forEach(el => observer.observe(el));
-
-    // Navbar scroll effect
-    const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-        } else {
-            navbar.style.boxShadow = 'none';
-        }
+function renderProducts() {
+    const list = document.getElementById('product-list');
+    list.innerHTML = "";
+    inventory.forEach(p => {
+        list.innerHTML += `
+            <div class="product-card">
+                <img src="${p.img}" alt="${p.name}">
+                <h3>${p.name}</h3>
+                <p>$${p.price.toFixed(2)}</p>
+                <button class="cta-button" onclick="addToCart(${p.id})">Add to Cart</button>
+            </div>
+        `;
     });
-});
+}
 
+function addToCart(id) {
+    const item = inventory.find(p => p.id === id);
+    cart.push(item);
+    document.querySelector('.cart-icon').innerText = `🛒 Cart (${cart.length})`;
+    alert(`${item.name} added to your bag!`);
+}
 
+function toggleCart() {
+    if (cart.length === 0) return alert("Your cart is currently empty.");
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    const confirmOrder = confirm(`Your subtotal is $${total.toFixed(2)}. Proceed to checkout?`);
+    
+    if (confirmOrder) {
+        alert("Success! Your order has been placed. Thank you for choosing Essence.");
+        cart = [];
+        document.querySelector('.cart-icon').innerText = `🛒 Cart (0)`;
+    }
+}
+
+renderProducts();
